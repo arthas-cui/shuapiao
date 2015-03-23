@@ -13,14 +13,15 @@ namespace ConsoleApplication3
     {
         static void Main(string[] args)
         {
+            var Program = new Program();
             while (true)
             {
-                MakeRequests();
-                Thread.Sleep(100);
+                Program.MakeRequests();
+                Thread.Sleep(getRandomNumber());
             }
         }
 
-        private static void MakeRequests()
+        private void MakeRequests()
         {
             HttpWebResponse response;
 
@@ -30,7 +31,7 @@ namespace ConsoleApplication3
             }
         }
 
-        private static bool Request_www_wenjuan_com(out HttpWebResponse response)
+        private bool Request_www_wenjuan_com(out HttpWebResponse response)
         {
             response = null;
 
@@ -39,8 +40,6 @@ namespace ConsoleApplication3
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create("http://www.wenjuan.com/s/eu2i2q/?from=timeline&isappinstalled=0");
 
                 request.KeepAlive = true;
-                request.Headers.Set(HttpRequestHeader.Pragma, "no-cache");
-                request.Headers.Set(HttpRequestHeader.CacheControl, "no-cache");
                 request.Accept = "application/json, text/javascript, */*; q=0.01";
                 request.Headers.Add("Origin", @"http://www.wenjuan.com");
                 request.Headers.Add("X-Requested-With", @"XMLHttpRequest");
@@ -49,11 +48,12 @@ namespace ConsoleApplication3
                 request.Referer = "http://www.wenjuan.com/s/eu2i2q/?from=timeline&isappinstalled=0";
                 request.Headers.Set(HttpRequestHeader.AcceptEncoding, "gzip, deflate");
                 request.Headers.Set(HttpRequestHeader.AcceptLanguage, "zh-CN,zh;q=0.8,en;q=0.6");
+                request.Headers.Set(HttpRequestHeader.Cookie, @"project_550f9a23f7405b6430d8ca2d=2; local_code=""emhfQ04=|1427101316|97d72df5581f8412d4463409986f8784917d40a4""; sessionid=V2hyazJESDNWOW5MRWc3ZjU1MGZkNjg0|1427101316|a2f3c7fe7ff3077fa21bd6c273cafa61b1dd693a; _xsrf=141f7d2cb73448df84b66cd621cab0d6; Hm_lvt_805c9a16950cbbec8732e90433c5a9e2=1427101319; Hm_lpvt_805c9a16950cbbec8732e90433c5a9e2=1427101364; current_rid=; open_rspd_link_tag_eu2i2q=""MQ==|1427102003|a1eef72fbd3e79e1aa95546e851996a55a56410d""");
 
                 request.Method = "POST";
                 request.ServicePoint.Expect100Continue = false;
 
-                string body = @"total_answers_str=%7B%22550f9b6ff7405b6524113aba%22%3A%5B%5B%22550f9b76f7405b6524113ac1%22%5D%5D%7D&pconvert_data=%7B%7D&finish_status=1&timestr=2015-03-23+16%3A51%3A32&uuid=ce20f426-d139-11e4-84dd-f8bc123ee698&svc=20470077f1bc2e55d36d98b9549be63d&version=1&s_code=-20&s_func_id=49&vvv=49fde9d8ae5cdfe250ef43f4604ed764&rand_int=0&from=timeline&isappinstalled=0";
+                string body = @"total_answers_str=%7B%22550f9b6ff7405b6524113aba%22%3A%5B%5B%22550f9b76f7405b6524113ac1%22%5D%5D%7D&pconvert_data=%7B%7D&finish_status=1&timestr=2015-03-23+17%3A13%3A23&uuid=db01b6f0-d13c-11e4-8b70-f8bc123ee698&svc=8871f2fd38bc300e0ff8168374ce0c93&version=1&s_code=-24&s_func_id=15&vvv=6fcf75551e4b59188bda7026e5f1f987&rand_int=61&from=timeline&isappinstalled=0&_xsrf=141f7d2cb73448df84b66cd621cab0d6";
                 byte[] postBytes = System.Text.Encoding.UTF8.GetBytes(body);
                 request.ContentLength = postBytes.Length;
                 Stream stream = request.GetRequestStream();
@@ -74,6 +74,11 @@ namespace ConsoleApplication3
             }
 
             return true;
+        }
+        private static Random _random = new Random();
+        private static int getRandomNumber()
+        {
+            return _random.Next(3000);
         }
     }
 }
